@@ -36,18 +36,18 @@ When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
   #   "When I uncheck..." steps in lines 89-95 of web_steps.rb
 
   #---- added ----#
-  log("***** rating_list #{rating_list}")
-  log("***** uncheck #{uncheck}")
+  #log("***** rating_list #{rating_list}")
+  #log("***** uncheck #{uncheck}")
     
   tokens = rating_list.split(', ')
     
   tokens.each do |field|
-      log("******#{field}******")
-      
+      #log("******ratings_#{field}******")
+      #log("******hi******")
       if uncheck == ""
-          check(field)
+          check("ratings_#{field}")
       elsif uncheck == "un"
-          uncheck(field)
+          uncheck("ratings_#{field}")
       end
   end
   #---------------#
@@ -58,4 +58,51 @@ end
 Then /I should see all the movies/ do
   # Make sure that all the movies in the app are visible in the table
 #   fail "Unimplemented"
+end
+
+# added
+When /I press (.*)/ do |button|
+  id = "ratings_" + button
+  #log("*****************#{id}")
+  click_button(id)
+end
+
+# added
+Then /I should see the following : (.*)/ do |movie_titles_string|
+    log("*****************hi")
+    movie_titles_array = movie_titles_string.split(', ')
+    log("***** movie_titles_array #{movie_titles_array}")
+    movie_titles_array.each do |title|
+        log("*****#{regexp}")
+        regexp = Regexp.new(title)
+
+        if page.respond_to? :should
+            page.should have_xpath('//*', :text => regexp)
+        else
+            assert page.has_xpath?('//*', :text => regexp)
+        end
+    end
+end
+
+# added
+Then /I should see: (.*)/ do |movie_title|
+    
+    regexp = Regexp.new(movie_title)
+    
+    if page.respond_to? :should
+        page.should have_xpath('//*', :text => regexp)
+    else
+        assert page.has_xpath?('//*', :text => regexp)
+    end
+end
+
+# added
+Then /I shouldn't see: (.*)/ do |movie_title|
+    regexp = Regexp.new(movie_title)
+    
+    if page.respond_to? :should
+        page.should !have_xpath('//*', :text => regexp)
+    else
+        assert !page.has_xpath?('//*', :text => regexp)
+    end
 end
