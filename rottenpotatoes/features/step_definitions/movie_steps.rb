@@ -57,7 +57,23 @@ end
 
 Then /I should see all the movies/ do
   # Make sure that all the movies in the app are visible in the table
-#   fail "Unimplemented"
+#     rows = all("table#movies tr") 
+#     log("*******#{rows}")
+#     expect(rows).to eq value
+    
+    all_titles = ["Aladdin", "The Terminator", "When Harry Met Sally", "The Help", "Chocolat", "Amelie", "2001: A Space Odyssey", "The Incredibles", "Raiders of the Lost Ark", "Chicken Run"]
+    
+    all_titles.each do |title|
+        log("--> #{title}")
+        regexp = Regexp.new(title)
+
+        if page.respond_to? :should
+            page.should have_xpath('//*', :text => regexp)
+        else
+            assert page.has_xpath?('//*', :text => regexp)
+        end
+    end
+###   fail "Unimplemented"
 end
 
 # added
@@ -67,22 +83,22 @@ When /I press (.*)/ do |button|
   click_button(id)
 end
 
-# added
-Then /I should see the following : (.*)/ do |movie_titles_string|
-    log("*****************hi")
-    movie_titles_array = movie_titles_string.split(', ')
-    log("***** movie_titles_array #{movie_titles_array}")
-    movie_titles_array.each do |title|
-        log("*****#{regexp}")
-        regexp = Regexp.new(title)
+# # added
+# Then /I should see the following : (.*)/ do |movie_titles_string|
+#     log("*****************hi")
+#     movie_titles_array = movie_titles_string.split(', ')
+#     log("***** movie_titles_array #{movie_titles_array}")
+#     movie_titles_array.each do |title|
+#         log("*****#{regexp}")
+#         regexp = Regexp.new(title)
 
-        if page.respond_to? :should
-            page.should have_xpath('//*', :text => regexp)
-        else
-            assert page.has_xpath?('//*', :text => regexp)
-        end
-    end
-end
+#         if page.respond_to? :should
+#             page.should have_xpath('//*', :text => regexp)
+#         else
+#             assert page.has_xpath?('//*', :text => regexp)
+#         end
+#     end
+# end
 
 # added
 Then /I should see: (.*)/ do |movie_title|

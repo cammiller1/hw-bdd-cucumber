@@ -45,5 +45,6 @@ Scenario: restrict to movies with 'PG' or 'R' ratings
   Then I shouldn't see: Aladdin
   
 
-#Scenario: all ratings selected
+Scenario: all ratings selected
   # see assignment
+  Then I should see all the movies
